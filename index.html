@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Job Finder</title>
+<style>
+  body {font-family: Arial, sans-serif; margin:0; background:#f4f6fb}
+  header{background:#2563eb;color:white;padding:20px;text-align:center}
+  .container{max-width:1100px;margin:auto;padding:20px}
+  .search-box{display:flex;gap:10px;margin-bottom:20px}
+  input,select{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%}
+  button{background:#2563eb;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer}
+  button:hover{background:#1d4ed8}
+  .jobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  .job-card{background:white;padding:18px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  .job-title{font-size:18px;font-weight:bold}
+  .company{color:#555;margin:5px 0}
+  .tag{display:inline-block;background:#e0e7ff;color:#1e40af;padding:4px 8px;border-radius:6px;font-size:12px;margin-right:6px;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🚀 AI Job Finder</h1>
+  <p>Find latest tech jobs instantly</p>
+</header>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="keyword" placeholder="Search role e.g. Frontend, D365, Python">
+    <select id="location">
+      <option value="">All Locations</option>
+      <option>Remote</option>
+      <option>India</option>
+      <option>USA</option>
+    </select>
+    <button onclick="filterJobs()">Search</button>
+  </div>
+
+  <div class="jobs" id="jobs"></div>
+</div>
+
+<script>
+const jobData = [
+  {title:"Frontend Developer", company:"Google", location:"Remote", skills:["HTML","CSS","JS"]},
+  {title:"D365 F&O Developer", company:"Microsoft Partner", location:"India", skills:["X++","D365","SQL"]},
+  {title:"Python Automation Engineer", company:"Startup AI", location:"Remote", skills:["Python","API","Automation"]},
+  {title:"Backend Engineer", company:"Amazon", location:"USA", skills:["Node","DB","Cloud"]}
+];
+
+function displayJobs(list){
+  const container=document.getElementById("jobs");
+  container.innerHTML="";
+  if(list.length===0){container.innerHTML="<p>No jobs found</p>";return;}
+  list.forEach(job=>{
+    const div=document.createElement("div");
+    div.className="job-card";
+    div.innerHTML=`
+      <div class='job-title'>${job.title}</div>
+      <div class='company'>${job.company} • ${job.location}</div>
+      <div>${job.skills.map(s=>`<span class='tag'>${s}</span>`).join('')}</div>
+      <br><button onclick="alert('Apply feature coming soon!')">Apply</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function filterJobs(){
+  const keyword=document.getElementById("keyword").value.toLowerCase();
+  const location=document.getElementById("location").value;
+  const filtered=jobData.filter(job=>
+    job.title.toLowerCase().includes(keyword) &&
+    (location==="" || job.location===location)
+  );
+  displayJobs(filtered);
+}
+
+displayJobs(jobData);
+</script>
+</body>
+</html>
